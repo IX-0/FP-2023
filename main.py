@@ -19,8 +19,13 @@ def main():
                 categ_dict[categories[0]].append(categories[1])
             else:
                 continue    
-    root.mainloop()
-    print(categ_dict)
+    x,y = input("Enter coordinates split by coma: ").strip().split(",")
+    coordinates = (float(x),float(y))
+    radius = float(input("Enter radius: "))
+    categs = input("Enter categories split by coma: ")
+    
+    
+    
 if __name__ == "__main__":
     main()
     
