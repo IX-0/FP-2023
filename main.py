@@ -1,5 +1,6 @@
 import tkinter as ttk 
 import requests as rqst
+import math
 
 #root = ttk.Tk()
 #button1 = ttk.Button(root,text="Teste",fg="black",bg="white")
@@ -49,7 +50,7 @@ def main():
     x, y = input("Enter coordinates split by coma: ").strip().split(",")
     radius = float(input("Enter radius: "))
     categs = input("Enter categories split by coma: ").lower()
-
+    
     parameters={
         "filter" : "circle:{},{},{}".format(x,y,radius),
         "apiKey" : "",
