@@ -1,5 +1,4 @@
 import tkinter as tk 
-import requests as rqst
 from API import *
 
 def printPlaces(places):
@@ -12,10 +11,23 @@ def printPlaces(places):
         print("="*60)
 
 
-def addPlace(frame:tk.Frame):
-    place = tk.Button(frame,text='text')
-    place.pack()
+def addPlaces(frame:tk.Frame):
 
+    #DEBUG
+    data = get("https://api.geoapify.com/v2/places",params={'apiKey':'d9d7d63a741949f6913b267674ca0f16','categories':'accommodation','limit':'5','bias':'proximity:-0.07071648508463113,51.50848194136378'})
+
+    places = convertRequest(data)
+    #DEBUG END
+
+    for place in places:
+        place = tk.Button(frame,text='Name:{}'.format(place['name']))
+        place.pack()
+
+
+def clearPlaces(frame:tk.Frame):
+    for place in frame.winfo_children():
+        place.destroy()
+        
 
 def set_all_categs():
     """Creates a set with all the categories in the file separated by '.' ."""
@@ -77,17 +89,22 @@ searchButton = tk.Button(
     root,
     text='Search'
 )
+clearButton = tk.Button(
+    root,
+    text='Clear Results'
+)
+
 
 categoryEntry = tk.Entry(
     root,
     width=25,
 )
-
 categoryLabel = tk.Label(
     root,
     text='Category:',
     font=('Open Sans', 10),
 )
+
 
 latEntry = tk.Entry(
     root,
@@ -98,6 +115,7 @@ latLabel = tk.Label(
     text='Latitude (º)',
     font=('Open Sans', 10),
 )
+
 
 lonEntry = tk.Entry(
     root,
@@ -114,9 +132,11 @@ placesFrame = tk.Frame(
     width= 50
 )
 
-searchButton.configure(command= lambda: addPlace(frame=placesFrame))
+searchButton.configure(command= lambda: addPlaces(frame=placesFrame))
+clearButton.configure(command= lambda: clearPlaces(frame=placesFrame))
 #Placement
-searchButton.grid(column=2,row=0,rowspan=3)
+searchButton.grid(column=2,row=0,rowspan=2)
+clearButton.grid(column=2,row=2)
 
 categoryLabel.grid(column=0,row=0)
 categoryEntry.grid(column=1,row=0)

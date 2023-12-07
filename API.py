@@ -8,7 +8,7 @@ def get(baseURL,params={}):
         newURL += f"&{k}={v}"
 
     request = rqst.get(newURL)
-    return request.json()
+    return request
 
 def convertRequest(data):
     """Converts data from the api to a list with locations"""
