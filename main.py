@@ -1,17 +1,17 @@
-import tkinter as ttk 
+import tkinter as tk 
 import requests as rqst
-import math
+from API import *
 
-#root = ttk.Tk()
-#button1 = ttk.Button(root,text="Teste",fg="black",bg="white")
+def printPlaces(places):
+    print()
+    print("="*60)
+    for place in places:
+        for k,v in place.items():
+            print("{} : {}".format(k,v))
+        print()
+        print("="*60)
 
-            
-def countlen():
-    """This function was used purely to study the categories.txt file. Determines the maximum length of a category split by '.' ."""
-    with open(r'C:\Users\Utilizador\Desktop\Tiago\GitRepositories\FP-2023\categories.txt') as file:
-        print(max([len(line.strip().split('.')) for line in file]))
-        
-        
+
 def set_all_categs():
     """Creates a set with all the categories in the file separated by '.' ."""
     with open(r'C:\Users\Utilizador\Desktop\Tiago\GitRepositories\FP-2023\categories.txt') as file:
@@ -45,6 +45,7 @@ def filter_categs(categs):
                 lst.append(k)
     return(','.join(lst))
 
+
 def main():
 
     x, y = input("Enter coordinates split by coma: ").strip().split(",")
@@ -54,10 +55,12 @@ def main():
     parameters={
         "filter" : "circle:{},{},{}".format(x,y,radius),
         "apiKey" : "",
-        "limit" : "10",
         "categories" : filter_categs(categs),   
     }
-    
+
+    data = get("")
+
+
 if __name__ == "__main__":
     main()
     
