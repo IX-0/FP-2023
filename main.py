@@ -12,6 +12,11 @@ def printPlaces(places):
         print("="*60)
 
 
+def addPlace(frame:tk.Frame):
+    place = tk.Button(frame,text='text')
+    place.pack()
+
+
 def set_all_categs():
     """Creates a set with all the categories in the file separated by '.' ."""
     with open(r'C:\Users\Utilizador\Desktop\Tiago\GitRepositories\FP-2023\categories.txt') as file:
@@ -22,7 +27,7 @@ def set_all_categs():
 def dict_all_categs():
     """Creates a dictionary with all the categories in the file as keys and the correspondent sub-categories as values."""
     with open(r'C:\Users\Utilizador\Desktop\Tiago\GitRepositories\FP-2023\categories.txt') as file:
-        dict = {k:v for k,v in [(line[:-1],line.strip().split('.')) for line in file]}
+        dict = {k:v for k,v in [(line,line.strip().split('.')) for line in file]}
     return dict
 
       
@@ -60,7 +65,68 @@ def main():
 
     data = get("")
 
+# if __name__ == "__main__":
+#     main()
 
-if __name__ == "__main__":
-    main()
-    
+root = tk.Tk()
+root.title('Places API')
+
+#GUI
+#Objects
+searchButton = tk.Button(
+    root,
+    text='Search'
+)
+
+categoryEntry = tk.Entry(
+    root,
+    width=25,
+)
+
+categoryLabel = tk.Label(
+    root,
+    text='Category:',
+    font=('Open Sans', 10),
+)
+
+latEntry = tk.Entry(
+    root,
+    width=25
+)
+latLabel = tk.Label(
+    root,
+    text='Latitude (º)',
+    font=('Open Sans', 10),
+)
+
+lonEntry = tk.Entry(
+    root,
+    width=25
+)
+lonLabel = tk.Label(
+    root,
+    text='Longitude (º)',
+    font=('Open Sans', 10),
+)
+
+placesFrame = tk.Frame(
+    root,
+    width= 50
+)
+
+searchButton.configure(command= lambda: addPlace(frame=placesFrame))
+#Placement
+searchButton.grid(column=2,row=0,rowspan=3)
+
+categoryLabel.grid(column=0,row=0)
+categoryEntry.grid(column=1,row=0)
+
+latLabel.grid(column=0,row=1)
+latEntry.grid(column=1,row=1)
+
+lonLabel.grid(column=0,row=2)
+lonEntry.grid(column=1,row=2)
+
+placesFrame.grid(column=0,row=3,columnspan=3)
+
+root.mainloop()
