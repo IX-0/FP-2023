@@ -64,89 +64,89 @@ def filter_categs(categs):
 
 
 def main():
+    #GUI
 
-    x, y = input("Enter coordinates split by coma: ").strip().split(",")
-    radius = float(input("Enter radius: "))
-    categs = input("Enter categories split by coma: ").lower()
+    #Window
+    root = tk.Tk()
+    root.title('Places API')
+
     
-    parameters={
-        "filter" : "circle:{},{},{}".format(x,y,radius),
-        "apiKey" : "",
-        "categories" : filter_categs(categs),   
-    }
-
-    data = get("")
-
-# if __name__ == "__main__":
-#     main()
-
-root = tk.Tk()
-root.title('Places API')
-
-#GUI
-#Objects
-searchButton = tk.Button(
-    root,
-    text='Search'
-)
-clearButton = tk.Button(
-    root,
-    text='Clear Results'
-)
+    #Widgets
+    searchButton = tk.Button(
+        root,
+        text='Search'
+    )
+    clearButton = tk.Button(
+        root,
+        text='Clear Results'
+    )
 
 
-categoryEntry = tk.Entry(
-    root,
-    width=25,
-)
-categoryLabel = tk.Label(
-    root,
-    text='Category:',
-    font=('Open Sans', 10),
-)
+    categoryEntry = tk.Entry(
+        root,
+        width=25,
+    )
+    categoryLabel = tk.Label(
+        root,
+        text='Category:',
+        font=('Open Sans', 10),
+    )
 
 
-latEntry = tk.Entry(
-    root,
-    width=25
-)
-latLabel = tk.Label(
-    root,
-    text='Latitude (º)',
-    font=('Open Sans', 10),
-)
+    latEntry = tk.Entry(
+        root,
+        width=25
+    )
+    latLabel = tk.Label(
+        root,
+        text='Latitude (º)',
+        font=('Open Sans', 10),
+    )
 
 
-lonEntry = tk.Entry(
-    root,
-    width=25
-)
-lonLabel = tk.Label(
-    root,
-    text='Longitude (º)',
-    font=('Open Sans', 10),
-)
+    lonEntry = tk.Entry(
+        root,
+        width=25
+    )
+    lonLabel = tk.Label(
+        root,
+        text='Longitude (º)',
+        font=('Open Sans', 10),
+    )
 
-placesFrame = tk.Frame(
-    root,
-    width= 50
-)
+    placesFrame = tk.Frame(
+        root,
+        width= 50
+    )
 
-searchButton.configure(command= lambda: addPlaces(frame=placesFrame))
-clearButton.configure(command= lambda: clearPlaces(frame=placesFrame))
-#Placement
-searchButton.grid(column=2,row=0,rowspan=2)
-clearButton.grid(column=2,row=2)
+    searchButton.configure(command= lambda: addPlaces(frame=placesFrame))
+    clearButton.configure(command= lambda: clearPlaces(frame=placesFrame))
+    #Placement
+    searchButton.grid(column=2,row=0,rowspan=2)
+    clearButton.grid(column=2,row=2)
 
-categoryLabel.grid(column=0,row=0)
-categoryEntry.grid(column=1,row=0)
+    categoryLabel.grid(column=0,row=0)
+    categoryEntry.grid(column=1,row=0)
 
-latLabel.grid(column=0,row=1)
-latEntry.grid(column=1,row=1)
+    latLabel.grid(column=0,row=1)
+    latEntry.grid(column=1,row=1)
 
-lonLabel.grid(column=0,row=2)
-lonEntry.grid(column=1,row=2)
+    lonLabel.grid(column=0,row=2)
+    lonEntry.grid(column=1,row=2)
 
-placesFrame.grid(column=0,row=3,columnspan=3)
+    placesFrame.grid(column=0,row=3,columnspan=3)
 
-root.mainloop()
+    root.mainloop()
+
+    # x, y = input("Enter coordinates split by coma: ").strip().split(",")
+    # radius = float(input("Enter radius: "))
+    # categs = input("Enter categories split by coma: ").lower()
+    
+    # parameters={
+    #     "filter" : "circle:{},{},{}".format(x,y,radius),
+    #     "apiKey" : "",
+    #     "categories" : filter_categs(categs),   
+    # }
+
+if __name__ == "__main__":
+    main()
