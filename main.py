@@ -13,15 +13,24 @@ def printPlaces(places):
 
 def addPlaces(frame:tk.Frame):
 
+    """Function that adds location objects to a frame"""
+
     #DEBUG
-    data = get("https://api.geoapify.com/v2/places",params={'apiKey':'d9d7d63a741949f6913b267674ca0f16','categories':'accommodation','limit':'5','bias':'proximity:-0.07071648508463113,51.50848194136378'})
+    data = get("https://api.geoapify.com/v2/places",params={'apiKey':'d9d7d63a741949f6913b267674ca0f16','categories':'accommodation','limit':'20','bias':'proximity:-0.07071648508463113,51.50848194136378'})
 
     places = convertRequest(data)
     #DEBUG END
 
     for place in places:
-        place = tk.Button(frame,text='Name:{}'.format(place['name']))
-        place.pack()
+        placeFrame = tk.LabelFrame(frame, text=place['name'])
+
+        tk.Label(placeFrame, text='Distance: {}'.format(place['distance']))
+        tk.Label(placeFrame, text='Categories: {}'.format(place['categories']))
+
+        for element in placeFrame.winfo_children():
+            element.pack()
+
+        placeFrame.pack()
 
 
 def clearPlaces(frame:tk.Frame):
@@ -147,6 +156,7 @@ def main():
     #     "apiKey" : "",
     #     "categories" : filter_categs(categs),   
     # }
+
 
 if __name__ == "__main__":
     main()
