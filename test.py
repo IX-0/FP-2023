@@ -1,8 +1,8 @@
 from API import *
-from main import *
 
 import tkinter as tk
 
+<<<<<<< HEAD
 # Create the main window
 window = tk.Tk()
 window.title("PythonExamples.org")
@@ -29,3 +29,12 @@ label1.pack(padx=10,pady=10)
 
 # Run the application
 window.mainloop()
+=======
+data = get("https://api.geoapify.com/v2/places",params={'apiKey':'d9d7d63a741949f6913b267674ca0f16','categories':'accommodation','limit':'5','bias':'proximity:-0.07071648508463113,51.50848194136378'})
+
+print(data)
+
+places = convertRequest(data)
+
+print(places)
+>>>>>>> 2143fc24e480e35134f7ad06398122a40c3c4fb6
