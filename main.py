@@ -49,7 +49,7 @@ def filter_categs(s:str, fileDir):
     validated_categs = [categ for categ in categ_lst if categ in categ_set]
 
     categ_dict = dict_all_categs(fileDir)            
-    lst = {k for k,v in categ_dict.items() for categ in validated_categs if categ in v}
+    lst = {k for k,v in categ_dict.items() for categ in validated_categs if categ in v or categ == k}
 
     return ','.join(lst)
 
