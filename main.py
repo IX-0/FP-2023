@@ -1,15 +1,6 @@
 import tkinter as tk 
 from API import *
 
-def printPlaces(places):
-    print()
-    print("="*60)
-    for place in places:
-        for k,v in place.items():
-            print("{} : {}".format(k,v))
-        print()
-        print("="*60)
-
 
 def addPlaces(frame:tk.Frame):
 
@@ -38,38 +29,29 @@ def clearPlaces(frame:tk.Frame):
         place.destroy()
         
 
-def set_all_categs():
-    """Creates a set with all the categories in the file separated by '.' ."""
-    with open(r'C:\Users\Utilizador\Desktop\Tiago\GitRepositories\FP-2023\categories.txt') as file:
-        all_categs={categ for line in file for categ in line.strip().split('.')}
-    return all_categs 
+def set_all_categs(fileDir):
+    """Creates a set with all the possible categories or sub-categories in file"""
+    with open(fileDir) as f:
+        return {categ for line in f for categ in line.strip().split('.')} 
    
    
-def dict_all_categs():
+def dict_all_categs(fileDir):
     """Creates a dictionary with all the categories in the file as keys and the correspondent sub-categories as values."""
-    with open(r'C:\Users\Utilizador\Desktop\Tiago\GitRepositories\FP-2023\categories.txt') as file:
-        dict = {k:v for k,v in [(line,line.strip().split('.')) for line in file]}
-    return dict
+    with open(fileDir) as f:
+        return {k:v for k,v in [(line.strip() ,line.strip().split('.')) for line in f]}
 
       
-def filter_categs(categs):
-    categ_set = set_all_categs()
-    categ_lst = [categ.strip() for categ in categs.strip().split(',')]
-    error_msg = ""
-    validated_categs=[]
-    for categ in categ_lst:
-        if categ in categ_set:
-            validated_categs.append(categ)
-        else:
-            error_msg += "'{}' is not a valid category.\n".format(categ)
-    print(error_msg, end="") 
-    categ_dict = dict_all_categs()            
-    lst=[]
-    for categ in validated_categs:
-        for k,v in categ_dict.items():
-            if categ == k or categ in v:
-                lst.append(k)
-    return(','.join(lst))
+def filter_categs(s:str, fileDir):
+    """Removes any categories not existent in file and returns the following pattern: <category>,<categorie>,(...),<categorie>"""
+    categ_set = set_all_categs(fileDir)
+    categ_lst = [categ.strip() for categ in s.split(',')]
+
+    validated_categs = [categ for categ in categ_lst if categ in categ_set]
+
+    categ_dict = dict_all_categs(fileDir)            
+    lst = {k for k,v in categ_dict.items() for categ in validated_categs if categ in v}
+
+    return ','.join(lst)
 
 
 def main():
@@ -146,17 +128,6 @@ def main():
     placesFrame.grid(column=0,row=3,columnspan=3)
 
     root.mainloop()
-
-    # x, y = input("Enter coordinates split by coma: ").strip().split(",")
-    # radius = float(input("Enter radius: "))
-    # categs = input("Enter categories split by coma: ").lower()
-    
-    # parameters={
-    #     "filter" : "circle:{},{},{}".format(x,y,radius),
-    #     "apiKey" : "",
-    #     "categories" : filter_categs(categs),   
-    # }
-
 
 if __name__ == "__main__":
     main()
