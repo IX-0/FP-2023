@@ -133,7 +133,7 @@ def main():
                 placeFrame.pack()
         avg_dist = total_dist/n
 
-    searchButton.configure(command= lambda: addPlaces(frame=placesFrame,))
+    searchButton.configure(command= lambda: addPlaces(frame=placesFrame))
     clearButton.configure(command= lambda: clearPlaces(frame=placesFrame))
     #Placement
     searchButton.grid(column=2,row=0,rowspan=2)
