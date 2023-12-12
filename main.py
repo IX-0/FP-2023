@@ -3,12 +3,10 @@ from tkinter import ttk
 from API import *
 
 
-
-
 def clearPlaces(frame:tk.Frame):
     for place in frame.winfo_children():
         place.destroy()
-        
+    
 
 
 def set_all_categs(fileDir):
@@ -37,7 +35,43 @@ def filter_categs(s:str, fileDir):
 
 
 def main():
-    #GUI
+
+    def get_params():
+    
+        lon = lonEntry.get()
+        lat = latEntry.get()
+        categs = categoryEntry.get()
+        params = {
+            'apiKey':'d9d7d63a741949f6913b267674ca0f16',
+            'categories': filter_categs(categs,'categories.txt'),
+            'bias':'proximity:{},{}'.format(lon,lat),
+            'limit':15
+        }
+        
+        return params
+    
+    def addPlaces(frame:tk.Canvas):
+
+        """Function that adds location objects to a frame"""
+
+        clearPlaces(frame)
+        data = get("https://api.geoapify.com/v2/places",get_params())
+        places = convertRequest(data)
+        
+        total_dist=0
+        for place in places:
+            if place.get('name',False):
+                placeFrame = tk.LabelFrame(frame, text=place['name'])
+
+                tk.Label(placeFrame, text='Distance: {}'.format(place['distance']))
+                tk.Label(placeFrame, text='Categories: {}'.format(place['categories']))
+                total_dist+=place['distance']
+                for element in placeFrame.winfo_children():
+                    element.pack()
+
+                placeFrame.pack()
+
+        avg_dist = total_dist/len(places)
 
     #Window
     root = tk.Tk()
@@ -81,60 +115,38 @@ def main():
         root,
         width=25
     )
+    
     lonLabel = tk.Label(
         root,
         text='Longitude (º)',
         font=('Open Sans', 10),
     )
 
-    placesFrame = tk.Frame(
-        root,
-        width= 50
+    resultsFrame = tk.Frame(
+        root
     )
 
-    def make_params():
+    resultsScrollbar = tk.Scrollbar(
+        resultsFrame
+        )
+
+    placesFrame = tk.Canvas(
+        resultsFrame
+    )
+
+    noPlacesFoundLabel = tk.Label(
+        placesFrame,
+        border=1,
+        text="There's no results for your search parameters",
+        padx=10,
+        pady=10
+    )
     
-        lon = lonEntry.get()
-        lat = latEntry.get()
-        categs = categoryEntry.get()
-        categs = filter_categs(categs,'categories.txt')
-        params = {
-            'apiKey':'d9d7d63a741949f6913b267674ca0f16',
-            'categories':categs,
-            'bias':'proximity:{},{}'.format(lon,lat)
-        }
-        
-        return params
-    
-    def addPlaces(frame:tk.Frame):
-
-        """Function that adds location objects to a frame"""
-
-        #DEBUG
-        data = get("https://api.geoapify.com/v2/places",make_params())
-
-        places = convertRequest(data)
-        #DEBUG END
-        
-        
-        total_dist=0
-        n=0
-        for place in places:
-            if place.get('name',False):
-                placeFrame = tk.LabelFrame(frame, text=place['name'])
-
-                tk.Label(placeFrame, text='Distance: {}'.format(place['distance']))
-                tk.Label(placeFrame, text='Categories: {}'.format(place['categories']))
-                total_dist+=place['distance']
-                n+=1
-                for element in placeFrame.winfo_children():
-                    element.pack()
-
-                placeFrame.pack()
-        avg_dist = total_dist/n
 
     searchButton.configure(command= lambda: addPlaces(frame=placesFrame))
     clearButton.configure(command= lambda: clearPlaces(frame=placesFrame))
+    resultsScrollbar.configure(command= placesFrame.yview)
+
     #Placement
     searchButton.grid(column=2,row=0,rowspan=2)
     clearButton.grid(column=2,row=2)
@@ -148,10 +160,13 @@ def main():
     lonLabel.grid(column=0,row=2)
     lonEntry.grid(column=1,row=2)
 
-    placesFrame.grid(column=0,row=3,columnspan=3)
     
-    
+    resultsFrame.grid(column=0,row=3,columnspan=3)
+    placesFrame.pack(side=tk.LEFT)
 
+    noPlacesFoundLabel.pack()
+    resultsScrollbar.pack(side=tk.RIGHT,fill=tk.Y)
+    
     root.mainloop()
 
 if __name__ == "__main__":

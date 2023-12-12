@@ -1,40 +1,67 @@
-from API import *
+# Python Program to make a scrollable frame
+# using Tkinter
 
-import tkinter as tk
+from tkinter import *
 
-<<<<<<< HEAD
-# Create the main window
-window = tk.Tk()
-window.title("PythonExamples.org")
-window.geometry("300x200")
+class ScrollBar:
+	
+	# constructor
+	def __init__(self):
+		
+		# create root window
+		root = Tk()
 
-# Function to read and print the value in Entry widget
-def print_entered_value():
-    value = entry.get()
-    label1.configure(text="Hello {}!".format(value))
+		# create a horizontal scrollbar by
+		# setting orient to horizontal
+		h = Scrollbar(root, orient = 'horizontal')
 
-label = tk.Label(window, text="Enter you name")
-label.pack()
- 
-# Create an Entry field
-entry = tk.Entry(window)
-entry.pack()
+		# attach Scrollbar to root window at 
+		# the bootom
+		h.pack(side = BOTTOM, fill = X)
 
-# Create a button
-button = tk.Button(window, text="Submit", command=print_entered_value)
-button.pack()
+		# create a vertical scrollbar-no need
+		# to write orient as it is by
+		# default vertical
+		v = Scrollbar(root)
 
-label1 = tk.Label(window, text="")
-label1.pack(padx=10,pady=10)
+		# attach Scrollbar to root window on 
+		# the side
+		v.pack(side = RIGHT, fill = Y)
+		
 
-# Run the application
-window.mainloop()
-=======
-data = get("https://api.geoapify.com/v2/places",params={'apiKey':'d9d7d63a741949f6913b267674ca0f16','categories':'accommodation','limit':'5','bias':'proximity:-0.07071648508463113,51.50848194136378'})
+		# create a Text widget with 15 chars
+		# width and 15 lines height
+		# here xscrollcomannd is used to attach Text
+		# widget to the horizontal scrollbar
+		# here yscrollcomannd is used to attach Text
+		# widget to the vertical scrollbar
+		t = Text(root, width = 15, height = 15, wrap = NONE,
+				xscrollcommand = h.set, 
+				yscrollcommand = v.set)
 
-print(data)
+		# insert some text into the text widget
+		for i in range(20):
+			t.insert(END,"this is some text\n")
 
-places = convertRequest(data)
+		# attach Text widget to root window at top
+		t.pack(side=TOP, fill=X)
 
-print(places)
->>>>>>> 2143fc24e480e35134f7ad06398122a40c3c4fb6
+		# here command represents the method to
+		# be executed xview is executed on
+		# object 't' Here t may represent any
+		# widget
+		h.config(command=t.xview)
+
+		# here command represents the method to
+		# be executed yview is executed on
+		# object 't' Here t may represent any
+		# widget
+		v.config(command=t.yview)
+
+		# the root window handles the mouse
+		# click event
+		root.mainloop()
+
+# create an object to Scrollbar class
+s = ScrollBar()
+		
