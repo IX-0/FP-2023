@@ -3,13 +3,9 @@ from tkinter import ttk
 from API import *
 
 
-
-
 def clearPlaces(frame:tk.Frame):
     for place in frame.winfo_children():
         place.destroy()
-        
-
 
 def set_all_categs(fileDir):
     """Creates a set with all the possible categories or sub-categories in file"""
