@@ -24,11 +24,12 @@ def dict_all_categs(fileDir):
 def filter_categs(s:str, fileDir):
     """Removes any categories not existent in file and returns the following pattern: <category>,<categorie>,(...),<categorie>"""
     categ_set = set_all_categs(fileDir)
+    categ_dict = dict_all_categs(fileDir)
     categ_lst = [categ.strip() for categ in s.strip().split(',')]
-
-    validated_categs = [categ for categ in categ_lst if categ in categ_set]
-
-    categ_dict = dict_all_categs(fileDir)            
+    print()
+     
+    validated_categs = [categ for categ in categ_lst if categ in categ_set or categ in categ_dict.keys()]
+     
     lst = {k for k,v in categ_dict.items() for categ in validated_categs if categ in v or categ == k}
 
     return ','.join(lst)
@@ -70,13 +71,16 @@ def main():
                     element.pack()
 
                 placeFrame.pack()
+            print(place)
 
-        avg_dist = total_dist/len(places)
+        avg_dist = total_dist/len(places)/1000
+        print("Average distance: {}".format(avg_dist))
+        print("Total locations: ", len(places))
 
     #Window
     root = tk.Tk()
     root.title('Places API')
-
+    root.geometry('350x600+400+300')
     
     #Widgets
     searchButton = tk.Button(
