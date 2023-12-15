@@ -10,8 +10,7 @@ def get(baseURL,params={}):
     request = rqst.get(newURL)
     return request.json()
 
-def convertRequest(data):
+def convertRequest(data,radius):
     """Converts data from the api to a list with locations"""
-    
-    locations = [{k:v for k,v in loc['properties'].items() } for loc in data['features'] if loc['properties'].get('name',False)]
+    locations = [{k:v for k,v in loc['properties'].items() } for loc in data['features'] if loc['properties'].get('name',False) and loc['properties']['distance'] <= radius*1000]
     return locations
