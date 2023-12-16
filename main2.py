@@ -43,9 +43,11 @@ def main():
         while len(lon) == 0 or abs(float(lon)) > 180 :
             lon = (input('Enter Longitude: ').strip())
             if abs(float(lon)) > 180: print('Invalid input. Longitude must be a number between -180 and 180.')
+
         while len(lat) == 0 or abs(float(lat)) > 90 :
             lat = (input('Enter Latitude: ').strip())
             if abs(float(lat)) > 90: print('Invalid input. Latitude must be a number between -90 and 90.')
+        
         radius = int(input('Enter radius: ').strip())
         categs = input('Enter categories separated by commas: ').strip()
         new_categs = filter_categs(categs, 'categories.txt')
