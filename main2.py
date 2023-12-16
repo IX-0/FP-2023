@@ -15,7 +15,6 @@ def filter_categs(s:str, fileDir):
     '''Removes any categories not existent in file and returns the following pattern: <category>,<categorie>,(...),<categorie>'''
     categ_lst = [categ.strip() for categ in s.strip().split(',')]
     categ_dict = dict_all_categs(fileDir)            
-    #lst = [categ if categ in categ_dict.keys() else k for categ in categ_lst for k, v in categ_dict.items() if categ in v]
     # OG code is slightly wrong
     '''for categ in categ_lst:
         if categ in categ_dict.keys():
