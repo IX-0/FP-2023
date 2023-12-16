@@ -7,6 +7,7 @@ def get(baseURL,params={}):
     newURL = baseURL + "?"
     for k,v in params.items():
         newURL += f"&{k}={v}"
+    print('ulr:', newURL)
     request = rqst.get(newURL)
     return request.json()
 
@@ -89,7 +90,7 @@ def main():
         #Input loops
         lon = floatInputLoop([-180,180] , 'Longitude (º): ')
         lat = floatInputLoop([-90,90], 'Latitude (º): ')
-        radius = floatInputLoop([0,20037250], 'Radius (m): ') #20037250 is about half of the circunference of earth in meters
+        radius = floatInputLoop([0,20037.250], 'Radius (km): ')*1000 #20037250 is about half of the circunference of earth in meters
 
         #Categories Loop
         while True:
