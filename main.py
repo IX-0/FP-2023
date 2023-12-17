@@ -17,12 +17,6 @@ def convertRequest(data):
     locations = [{k:v for k,v in loc['properties'].items()} for loc in data['features'] if loc['properties'].get('name',False)]
     return locations
 
-
-def set_all_categs(fileDir):
-    """Creates a set with all the possible categories or sub-categories in file"""
-    with open(fileDir,'r') as f:
-        return {categ for line in f for categ in line.strip().split('.')}
-   
    
 def dict_all_categs(fileDir):
     """Creates a dictionary with all the categories in the file as keys and the correspondent sub-categories as values."""
@@ -36,15 +30,11 @@ def filter_categs(s:str, fileDir):
     found categories: '<category>,<categorie>,(...),<categorie>'
     invalid categories: '<category>,<categorie>,(...),<categorie>'
     """
-    categ_set = set_all_categs(fileDir)
-    categ_dict = dict_all_categs(fileDir)
-    categ_lst = {categ.strip() for categ in s.strip().split(',')}
-     
-    validated_categs = {categ for categ in categ_lst if categ in categ_set or categ in categ_dict.keys()}
-    unique_categs = {k for k,v in categ_dict.items() for categ in validated_categs if categ in v or categ == k}
-    filtered_catgs = categ_lst - validated_categs
-
-    return (','.join(unique_categs) , ','.join(filtered_catgs))
+    categ_lst = [categ.strip() for categ in s.strip().split(',')]
+    categ_dict = dict_all_categs(fileDir)            
+    set = {categ if categ in categ_dict.keys() else next((k for k, v in categ_dict.items() if categ in v), 'default_value') for categ in categ_lst}
+    if 'default_value' in set: set.remove('default_value') 
+    return ','.join(set)
 
 
 def floatInputLoop(range, prompt):
@@ -93,7 +83,8 @@ def main():
         radius = floatInputLoop([0,20037.250], 'Radius (km): ')*1000 #20037250 is about half of the circunference of earth in meters
 
         #Categories Loop
-        while True:
+        catgs = filter_categs(input('Categories (separated by comma):'),'categories.txt')
+        '''while True:
             catgs, filtered_catgs = filter_categs(input('Categories (separated by comma):'),'categories.txt')
             if catgs == '':
                 if filtered_catgs != '':
@@ -103,7 +94,7 @@ def main():
             else:
                 if filtered_catgs != '':
                     print('!!! The categories: ' + filtered_catgs + ' where filtered because they where invalid !!!')
-                break
+                break'''
 
         params = {
             'apiKey':'d9d7d63a741949f6913b267674ca0f16',
@@ -121,14 +112,14 @@ def main():
             for place in places:
                 print("="*60)
                 prettyPlacePrint(place)
-                distance = round(haversine(place['lon'],place['lat'],lon,lat))
+                distance = round(haversine(place['lon'],place['lat'],lon,lat), 2)
                 totalDistance += distance
-                print("Distance : {}".format(distance))
+                print("Distance : {} km".format(distance))
 
             medianDistance = totalDistance/len(places)
 
             print("="*60)
-            print("Distância média : {}".format(medianDistance))
+            print("Distância média : {} km".format(round(medianDistance,2)))
             print("Número de atrações : {}".format(len(places)))
             print("="*60)
 

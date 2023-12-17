@@ -40,10 +40,10 @@ def filter_categs(s:str, fileDir):
                 if categ in v:
                     lst.append(k)'''
     # ChatGPT lst comprehension
-    lst = list({categ if categ in categ_dict.keys() else next((k for k, v in categ_dict.items() if categ in v), 'default_value') for categ in categ_lst})
-    if 'default_value' in lst: 
-        for i in range(lst.count('default_value')): lst.remove('default_value')
-    return ','.join(lst)
+    set = {categ if categ in categ_dict.keys() else next((k for k, v in categ_dict.items() if categ in v), 'default_value') for categ in categ_lst}
+    if 'default_value' in set: 
+        set.remove('default_value')
+    return ','.join(set)
 
 
 def main():
